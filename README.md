@@ -1,0 +1,2 @@
+# CustomScoreboard
+A Simple Scoreboard
