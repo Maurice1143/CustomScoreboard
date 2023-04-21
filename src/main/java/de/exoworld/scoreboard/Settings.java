@@ -17,6 +17,7 @@ public final class Settings {
     private static final Map<String, String> adminColors = new HashMap<>();
 
     private static String infoName;
+    private static int infoCooldown;
     private List<String> infoMessages;
     private static final List<String[]> infoMessageList = new ArrayList<>();
 
@@ -31,6 +32,7 @@ public final class Settings {
         moneySuffix = config.getString("Money.Suffix", "$");
         moneyColor = config.getString("Money.Color", "§6");
         infoName = config.getString("Info.Name", "Infos:");
+        infoCooldown = config.getInt("Info.Cooldown", 60);
         infoMessages = config.getStringList("Info.Infos");
 
         createAdminColors(getList(rankColors));
@@ -80,6 +82,9 @@ public final class Settings {
     public static String getInfoName() {
         return infoName;
     }
+    public static int getInfoCooldown() {
+        return infoCooldown;
+    }
 
     public static String getAdminColor(String group) {
         String color = "§f";
@@ -118,6 +123,7 @@ public final class Settings {
         moneySuffix = config.getString("Money.Suffix", "$");
         moneyColor = config.getString("Money.Color", "§6");
         infoName = config.getString("Info.Name", "Infos:");
+        infoCooldown = config.getInt("Info.Cooldown", 60);
         infoMessages = config.getStringList("Info.Infos");
 
         createAdminColors(getList(rankColors));

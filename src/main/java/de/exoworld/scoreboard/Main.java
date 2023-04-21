@@ -52,9 +52,7 @@ public final class Main extends JavaPlugin {
 
         createEvents();
         createCommands();
-
-        ScoreboardManagerInstance = new ScoreboardManager();
-        MoneyChangeListener = new MoneyChangeListener();
+        createManager();
 
         getLogger().log(Level.INFO, String.format("[%s] - Erfolgreich gestartet", getName()));
     }
@@ -89,6 +87,11 @@ public final class Main extends JavaPlugin {
 
     private void createCommands() {
         getCommand("customscoreboard").setExecutor(new ScoreboardCommands());
+    }
+
+    private void createManager() {
+        ScoreboardManagerInstance = new ScoreboardManager();
+        MoneyChangeListener = new MoneyChangeListener();
     }
 
     public static Economy getEconomy() {

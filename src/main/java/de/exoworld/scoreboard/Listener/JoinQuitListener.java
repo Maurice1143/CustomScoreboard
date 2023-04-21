@@ -12,6 +12,7 @@ public class JoinQuitListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Main.getScoreboardManager().getMoneyMap().put(e.getPlayer(), Main.getEconomy().getBalance(e.getPlayer()));
         Main.getScoreboardManager().createScoreboard(e.getPlayer());
+        Main.getScoreboardManager().createInfos(e.getPlayer());
     }
 
     @EventHandler

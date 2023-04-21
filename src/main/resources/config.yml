@@ -23,5 +23,6 @@ Money:
 
 Info:
   Name: "Infos:"
+  Cooldown: 60 #In Seconds
   Infos:
     - "example text::another example::last example here :)"

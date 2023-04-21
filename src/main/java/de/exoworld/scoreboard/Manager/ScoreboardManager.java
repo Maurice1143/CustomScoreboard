@@ -19,7 +19,6 @@ public class ScoreboardManager {
     private final Map<Integer, String> infoMap = new HashMap<>();
     private final Map<Player, Double> moneyMap = new HashMap<>();
     private int maxInfoLength = 3;
-    private int infoDelay = 60; //in seconds
 
     public ScoreboardManager() {
         scoreboardName = Settings.getServerName() + "-CustomScoreboard";
@@ -31,7 +30,7 @@ public class ScoreboardManager {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 createInfos(player);
             }
-        }, infoDelay * 20L, infoDelay * 20L);
+        }, Settings.getInfoCooldown() * 20L, Settings.getInfoCooldown() * 20L);
     }
 
     public void createScoreboard(Player player) {
@@ -68,8 +67,6 @@ public class ScoreboardManager {
         objective.getScore(Settings.getInfoName()).setScore(4);
 
         player.setScoreboard(board);
-
-        createInfos(player);
     }
 
 
@@ -91,7 +88,6 @@ public class ScoreboardManager {
                 length--;
             }
         }
-
     }
 
 
@@ -110,6 +106,7 @@ public class ScoreboardManager {
     public void refreshScoreboards() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             createScoreboard(player);
+            createInfos(player);
         }
     }
 
