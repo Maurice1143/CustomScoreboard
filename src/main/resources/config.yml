@@ -1,0 +1,27 @@
+ServerName: "Server-Name"
+
+
+# The rank name must be the group name NOT the display name
+# For Color formatting use '§'
+# To Split between name and color use '::'
+
+Rank:
+  Name: "Your Rank:"
+  Colors:
+    - "example::§c§l"
+
+
+Money:
+  Name: "Money:"
+  Suffix: "$"
+  Color: "§6"
+
+
+  # Be careful that the string is not longer than the scoreboard is able to show
+  # To split texts in multiple lines use '::'
+  # The message can only be split in 3 parts
+
+Info:
+  Name: "Infos:"
+  Infos:
+    - "example text::another example::last example here :)"

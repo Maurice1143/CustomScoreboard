@@ -1,0 +1,13 @@
+name: CustomScoreboard
+version: '${project.version}'
+main: de.exoworld.scoreboard.Main
+api-version: 1.19
+authors: [Maurice]
+description: Simple Scoreboard plugin
+website: https://www.eXo-world.de
+
+depend: [LuckPerms, Vault]
+
+commands:
+  customscoreboard:
+    permission: customscoreboard.refresh
