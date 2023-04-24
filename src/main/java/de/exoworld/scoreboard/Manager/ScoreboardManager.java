@@ -43,7 +43,7 @@ public class ScoreboardManager {
 
         String primaryGroup = Main.getLuckPermsManager().getPrimaryGroup(player);
         String displayName = Main.getLuckPermsManager().getDisplayName(primaryGroup);
-        String adminColor = Settings.getAdminColor(primaryGroup);
+        ChatColor adminColor = Settings.getAdminColor(primaryGroup);
         Team rank = board.registerNewTeam("rank");
         rank.addEntry(ChatColor.AQUA + "" + ChatColor.WHITE);
         rank.prefix(Component.text(adminColor + displayName));
@@ -98,7 +98,7 @@ public class ScoreboardManager {
     public void changeRank(Player player) {
         String primaryGroup = Main.getLuckPermsManager().getPrimaryGroup(player);
         String displayName = Main.getLuckPermsManager().getDisplayName(primaryGroup);
-        String adminColor = Settings.getAdminColor(primaryGroup);
+        ChatColor adminColor = Settings.getAdminColor(primaryGroup);
         player.getScoreboard().getEntryTeam(ChatColor.AQUA + "" + ChatColor.WHITE).prefix(Component.text(adminColor + displayName));
 
     }

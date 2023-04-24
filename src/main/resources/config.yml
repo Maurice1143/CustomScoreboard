@@ -7,8 +7,6 @@ ServerName: "Server-Name"
 
 Rank:
   Name: "Your Rank:"
-  Colors:
-    - "example::§c§l"
 
 
 Money:

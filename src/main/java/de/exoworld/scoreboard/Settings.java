@@ -1,7 +1,16 @@
 package de.exoworld.scoreboard;
 
+import de.exoworld.scoreboard.Manager.LuckPermsManager;
+import net.kyori.adventure.text.Component;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.group.Group;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 
 public final class Settings {
@@ -13,8 +22,8 @@ public final class Settings {
     private static String moneyColor;
 
     private static String rankName;
-    private List<String> rankColors;
-    private static final Map<String, String> adminColors = new HashMap<>();
+    //private Map<String, ChatColor> rankColors = new HashMap<>();
+    private static final Map<String, ChatColor> adminColors = new HashMap<>();
 
     private static String infoName;
     private static int infoCooldown;
@@ -26,7 +35,6 @@ public final class Settings {
         config = Main.getInstance().getConfig();
 
         serverName = config.getString("ServerName", "Placeholder");
-        rankColors = config.getStringList("Rank.Colors");
         rankName = config.getString("Rank.Name", "Your Rank:");
         moneyName = config.getString("Money.Name", "Money:");
         moneySuffix = config.getString("Money.Suffix", "$");
@@ -35,15 +43,17 @@ public final class Settings {
         infoCooldown = config.getInt("Info.Cooldown", 60);
         infoMessages = config.getStringList("Info.Infos");
 
-        createAdminColors(getList(rankColors));
         createMessages(getList(infoMessages));
     }
 
-    private void createAdminColors(List<String> colors) {
+    public void createAdminColors() {
         adminColors.clear();
-        for (String color : colors) {
-            String[] temp = color.split("::");
-            adminColors.put(temp[0], temp[1]);
+        LuckPerms lp = LuckPermsManager.getInstance().getAPI();
+        for(Group group : lp.getGroupManager().getLoadedGroups()) {
+            String value = group.getCachedData().getMetaData().getMetaValue("CustomScoreboardColor");
+            ChatColor color = Utils.convertColorString(value);
+
+            adminColors.put(group.getName(), color);
         }
     }
 
@@ -86,9 +96,8 @@ public final class Settings {
         return infoCooldown;
     }
 
-    public static String getAdminColor(String group) {
-        String color = "§f";
-
+    public static ChatColor getAdminColor(String group) {
+        ChatColor color = ChatColor.getByChar("f");
         if(group != null && adminColors.get(group) != null) {
             color = adminColors.get(group);
         }
@@ -117,7 +126,6 @@ public final class Settings {
         config = Main.getInstance().getConfig();
 
         serverName = config.getString("ServerName", "Placeholder");
-        rankColors = config.getStringList("Rank.Colors");
         rankName = config.getString("Rank.Name", "Your Rank:");
         moneyName = config.getString("Money.Name", "Money:");
         moneySuffix = config.getString("Money.Suffix", "$");
@@ -126,7 +134,7 @@ public final class Settings {
         infoCooldown = config.getInt("Info.Cooldown", 60);
         infoMessages = config.getStringList("Info.Infos");
 
-        createAdminColors(getList(rankColors));
+        createAdminColors();
         createMessages(getList(infoMessages));
         Main.getScoreboardManager().refreshScoreboards();
     }

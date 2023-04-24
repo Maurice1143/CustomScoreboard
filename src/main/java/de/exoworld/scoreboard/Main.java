@@ -50,9 +50,9 @@ public final class Main extends JavaPlugin {
         }
         manager = Bukkit.getPluginManager();
 
+        createManager();
         createEvents();
         createCommands();
-        createManager();
 
         getLogger().log(Level.INFO, String.format("[%s] - Erfolgreich gestartet", getName()));
     }
@@ -83,6 +83,7 @@ public final class Main extends JavaPlugin {
 
     private void createEvents() {
         manager.registerEvents(new JoinQuitListener(), this);
+        MoneyChangeListener = new MoneyChangeListener();
     }
 
     private void createCommands() {
@@ -91,7 +92,6 @@ public final class Main extends JavaPlugin {
 
     private void createManager() {
         ScoreboardManagerInstance = new ScoreboardManager();
-        MoneyChangeListener = new MoneyChangeListener();
     }
 
     public static Economy getEconomy() {
