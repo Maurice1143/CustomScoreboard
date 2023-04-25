@@ -23,7 +23,7 @@ public final class Settings {
 
     private static String rankName;
     //private Map<String, ChatColor> rankColors = new HashMap<>();
-    private static final Map<String, ChatColor> adminColors = new HashMap<>();
+    private static final Map<String, String> adminColors = new HashMap<>();
 
     private static String infoName;
     private static int infoCooldown;
@@ -51,7 +51,7 @@ public final class Settings {
         LuckPerms lp = LuckPermsManager.getInstance().getAPI();
         for(Group group : lp.getGroupManager().getLoadedGroups()) {
             String value = group.getCachedData().getMetaData().getMetaValue("CustomScoreboardColor");
-            ChatColor color = Utils.convertColorString(value);
+            String color = Utils.convertColorString(value);
 
             adminColors.put(group.getName(), color);
         }
@@ -96,8 +96,8 @@ public final class Settings {
         return infoCooldown;
     }
 
-    public static ChatColor getAdminColor(String group) {
-        ChatColor color = ChatColor.getByChar("f");
+    public static String getAdminColor(String group) {
+        String color = "§f";
         if(group != null && adminColors.get(group) != null) {
             color = adminColors.get(group);
         }

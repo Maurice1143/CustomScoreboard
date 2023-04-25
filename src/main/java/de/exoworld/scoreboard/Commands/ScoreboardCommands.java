@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +21,12 @@ public class ScoreboardCommands implements CommandExecutor, TabCompleter {
         if (command.getName().equalsIgnoreCase("customscoreboard")) {
             if (args[0].equalsIgnoreCase("reload")) {
                 Main.getSettings().reloadSettings();
-                sender.sendMessage("§7[§bCustomScoreboard§7]§2Config wurde erfolgreich reloaded.");
+                sender.sendMessage("§7[§bCustomScoreboard§7] §2Config wurde erfolgreich reloaded.");
                 return true;
             }
             if (args[0].equalsIgnoreCase("refresh")) {
                 Main.getScoreboardManager().refreshScoreboards();
-                sender.sendMessage("§7[§bCustomScoreboard§7]§2Scoreboard wurde für alle Spieler neu geladen.");
+                sender.sendMessage("§7[§bCustomScoreboard§7] §2Scoreboard wurde für alle Spieler neu geladen.");
                 return true;
             }
         }
