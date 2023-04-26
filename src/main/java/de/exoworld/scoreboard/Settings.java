@@ -1,14 +1,10 @@
 package de.exoworld.scoreboard;
 
 import de.exoworld.scoreboard.Manager.LuckPermsManager;
-import net.kyori.adventure.text.Component;
+import de.exoworld.scoreboard.Manager.ScoreboardManager;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -136,6 +132,7 @@ public final class Settings {
 
         createAdminColors();
         createMessages(getList(infoMessages));
-        Main.getScoreboardManager().refreshScoreboards();
+        ScoreboardManager.getInstnace().refreshScoreboards();
+        ScoreboardManager.getInstnace().restartInfoTimer();
     }
 }

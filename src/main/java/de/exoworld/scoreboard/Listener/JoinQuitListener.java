@@ -1,6 +1,7 @@
 package de.exoworld.scoreboard.Listener;
 
 import de.exoworld.scoreboard.Main;
+import de.exoworld.scoreboard.Manager.ScoreboardManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -10,13 +11,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class JoinQuitListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Main.getScoreboardManager().getMoneyMap().put(e.getPlayer(), Main.getEconomy().getBalance(e.getPlayer()));
-        Main.getScoreboardManager().createScoreboard(e.getPlayer());
-        Main.getScoreboardManager().createInfos(e.getPlayer());
+        ScoreboardManager.getInstnace().getMoneyMap().put(e.getPlayer(), Main.getEconomy().getBalance(e.getPlayer()));
+        ScoreboardManager.getInstnace().createScoreboard(e.getPlayer());
+        ScoreboardManager.getInstnace().createInfos(e.getPlayer());
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        Main.getScoreboardManager().getMoneyMap().remove(e.getPlayer());
+        ScoreboardManager.getInstnace().getMoneyMap().remove(e.getPlayer());
     }
 }

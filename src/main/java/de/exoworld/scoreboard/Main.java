@@ -19,12 +19,9 @@ public final class Main extends JavaPlugin {
     private static final Logger log = Logger.getLogger("CustomScoreboard");
     private static Main plugin = null;
     private static Economy econ = null;
-    private static ScoreboardManager ScoreboardManagerInstance;
-    private static LuckPermsManager LuckPermsManagerInstance;
 
     private static Settings ScoreboardConfig;
     private static PluginManager manager;
-    private MoneyChangeListener MoneyChangeListener;
 
     @Override
     public void onDisable() {
@@ -76,14 +73,14 @@ public final class Main extends JavaPlugin {
         if (rsp == null) {
            return false;
         }
-        LuckPermsManagerInstance = new LuckPermsManager();
+        new LuckPermsManager();
         return true;
     }
 
 
     private void createEvents() {
         manager.registerEvents(new JoinQuitListener(), this);
-        MoneyChangeListener = new MoneyChangeListener();
+        new MoneyChangeListener();
     }
 
     private void createCommands() {
@@ -91,19 +88,11 @@ public final class Main extends JavaPlugin {
     }
 
     private void createManager() {
-        ScoreboardManagerInstance = new ScoreboardManager();
+        new ScoreboardManager();
     }
 
     public static Economy getEconomy() {
         return econ;
-    }
-
-    public static ScoreboardManager getScoreboardManager() {
-        return ScoreboardManagerInstance;
-    }
-
-    public static LuckPermsManager getLuckPermsManager() {
-        return LuckPermsManagerInstance;
     }
 
     public static Settings getSettings() {

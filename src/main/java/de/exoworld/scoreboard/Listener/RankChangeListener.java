@@ -1,6 +1,7 @@
 package de.exoworld.scoreboard.Listener;
 
 import de.exoworld.scoreboard.Main;
+import de.exoworld.scoreboard.Manager.ScoreboardManager;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,7 +18,7 @@ public class RankChangeListener {
             Player player = Bukkit.getPlayer(e.getUser().getUniqueId());
 
             if (player != null && player.isOnline()) {
-                Main.getScoreboardManager().changeRank(player);
+                ScoreboardManager.getInstnace().changeRank(player);
             }
 
         });
@@ -25,7 +26,7 @@ public class RankChangeListener {
             Player player = Bukkit.getPlayer(e.getUser().getUniqueId());
 
             if (player != null && player.isOnline()) {
-                Main.getScoreboardManager().changeRank(player);
+                ScoreboardManager.getInstnace().changeRank(player);
             }
 
         });

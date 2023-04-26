@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 
 public class MoneyChangeListener {
 
-    private int checkInterval = 1; //in seconds
-
     public MoneyChangeListener() {
+        //in seconds
+        int checkInterval = 1;
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-            ScoreboardManager manager = Main.getScoreboardManager();
+            ScoreboardManager manager = ScoreboardManager.getInstnace();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if(!manager.getMoneyMap().containsKey(player) || !manager.getMoneyMap().get(player).equals(Main.getEconomy().getBalance(player))){
                     manager.getMoneyMap().remove(player);

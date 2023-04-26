@@ -14,23 +14,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScoreboardManager {
+    private static ScoreboardManager instance;
     private final org.bukkit.scoreboard.ScoreboardManager manager;
     private String scoreboardName;
     private final Map<Integer, String> infoMap = new HashMap<>();
     private final Map<Player, Double> moneyMap = new HashMap<>();
-    private int maxInfoLength = 3;
+    private int infoTimerId = -1;
 
     public ScoreboardManager() {
+        instance = this;
+
         scoreboardName = Settings.getServerName() + "-CustomScoreboard";
         manager = Bukkit.getScoreboardManager();
         createInfoMap();
+        createInfoTimer();
         refreshScoreboards();
-
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                createInfos(player);
-            }
-        }, Settings.getInfoCooldown() * 20L, Settings.getInfoCooldown() * 20L);
     }
 
     public void createScoreboard(Player player) {
@@ -41,8 +39,8 @@ public class ScoreboardManager {
         money.addEntry(ChatColor.RED + "" + ChatColor.WHITE);
         money.prefix(Component.text(Settings.getMoneyColor() + "" + String.format("%,.2f", (Main.getEconomy().getBalance(player))) + Settings.getMoneySuffix()));
 
-        String primaryGroup = Main.getLuckPermsManager().getPrimaryGroup(player);
-        String displayName = Main.getLuckPermsManager().getDisplayName(primaryGroup);
+        String primaryGroup = LuckPermsManager.getInstance().getPrimaryGroup(player);
+        String displayName = LuckPermsManager.getInstance().getDisplayName(primaryGroup);
         String adminColor = Settings.getAdminColor(primaryGroup);
         Team rank = board.registerNewTeam("rank");
         rank.addEntry(ChatColor.AQUA + "" + ChatColor.WHITE);
@@ -73,19 +71,21 @@ public class ScoreboardManager {
     public void createInfos(Player player) {
         Objective objective = player.getScoreboard().getObjective(scoreboardName);
         String[] rdmMessage = Settings.getRandomMessage();
+        final int maxInfoLength = 3;
         int length = maxInfoLength;
-
-        for (int i = 0; i < infoMap.size(); i++) {
-            if (objective.getScore(infoMap.get(i)).isScoreSet()) {
-                objective.getScore(infoMap.get(i)).resetScore();
+        if (objective != null) {
+            for (int i = 0; i < infoMap.size(); i++) {
+                if (objective.getScore(infoMap.get(i)).isScoreSet()) {
+                    objective.getScore(infoMap.get(i)).resetScore();
+                }
             }
-        }
 
-        for (int i = 0; i < rdmMessage.length; i++) {
-            if (i + 1 <= maxInfoLength) {
-                player.getScoreboard().getEntryTeam(infoMap.get(i)).prefix(Component.text(rdmMessage[i]));
-                objective.getScore(infoMap.get(i)).setScore(length);
-                length--;
+            for (int i = 0; i < rdmMessage.length; i++) {
+                if (i + 1 <= maxInfoLength) {
+                    player.getScoreboard().getEntryTeam(infoMap.get(i)).prefix(Component.text(rdmMessage[i]));
+                    objective.getScore(infoMap.get(i)).setScore(length);
+                    length--;
+                }
             }
         }
     }
@@ -96,8 +96,8 @@ public class ScoreboardManager {
     }
 
     public void changeRank(Player player) {
-        String primaryGroup = Main.getLuckPermsManager().getPrimaryGroup(player);
-        String displayName = Main.getLuckPermsManager().getDisplayName(primaryGroup);
+        String primaryGroup = LuckPermsManager.getInstance().getPrimaryGroup(player);
+        String displayName = LuckPermsManager.getInstance().getDisplayName(primaryGroup);
         String adminColor = Settings.getAdminColor(primaryGroup);
         player.getScoreboard().getEntryTeam(ChatColor.AQUA + "" + ChatColor.WHITE).prefix(Component.text(adminColor + displayName));
 
@@ -116,7 +116,31 @@ public class ScoreboardManager {
         infoMap.put(2, ChatColor.GOLD + "" + ChatColor.WHITE);
     }
 
+    public void createInfoTimer() {
+        infoTimerId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                createInfos(player);
+            }
+        }, Settings.getInfoCooldown() * 20L, Settings.getInfoCooldown() * 20L);
+    }
+
+    public void cancelInfoTimer() {
+        if (infoTimerId != -1) {
+            Bukkit.getScheduler().cancelTask(infoTimerId);
+            infoTimerId = -1;
+        }
+
+    }
+
+    public void restartInfoTimer() {
+        cancelInfoTimer();
+        createInfoTimer();
+    }
     public Map<Player, Double> getMoneyMap() {
         return moneyMap;
+    }
+
+    public static ScoreboardManager getInstnace() {
+        return instance;
     }
 }

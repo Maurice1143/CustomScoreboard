@@ -1,10 +1,6 @@
 ServerName: "Server-Name"
 
 
-# The rank name must be the group name NOT the display name
-# For Color formatting use '§'
-# To Split between name and color use '::'
-
 Rank:
   Name: "Your Rank:"
 

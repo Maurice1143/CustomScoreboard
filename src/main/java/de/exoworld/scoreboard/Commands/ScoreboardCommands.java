@@ -1,6 +1,7 @@
 package de.exoworld.scoreboard.Commands;
 
 import de.exoworld.scoreboard.Main;
+import de.exoworld.scoreboard.Manager.ScoreboardManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class ScoreboardCommands implements CommandExecutor, TabCompleter {
                 return true;
             }
             if (args[0].equalsIgnoreCase("refresh")) {
-                Main.getScoreboardManager().refreshScoreboards();
+                ScoreboardManager.getInstnace().refreshScoreboards();
                 sender.sendMessage("§7[§bCustomScoreboard§7] §2Scoreboard wurde für alle Spieler neu geladen.");
                 return true;
             }
