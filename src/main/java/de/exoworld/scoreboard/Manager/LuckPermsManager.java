@@ -9,12 +9,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LuckPermsManager {
     private static LuckPermsManager instance;
     private LuckPerms API;
     private final GroupManager groupManager;
     private final UserManager userManager;
 
+    private final Map<Player, String> userRanks = new HashMap<>();
 
     public LuckPermsManager() {
         instance = this;
@@ -52,5 +56,9 @@ public class LuckPermsManager {
 
     public static LuckPermsManager getInstance() {
         return instance;
+    }
+
+    public Map<Player, String> getRankMap() {
+        return userRanks;
     }
 }
