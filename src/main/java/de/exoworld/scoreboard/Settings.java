@@ -132,7 +132,7 @@ public final class Settings {
 
         createAdminColors();
         createMessages(getList(infoMessages));
-        ScoreboardManager.getInstnace().refreshScoreboards();
-        ScoreboardManager.getInstnace().restartInfoTimer();
+        ScoreboardManager.getInstance().refreshScoreboards();
+        ScoreboardManager.getInstance().restartInfoTimer();
     }
 }

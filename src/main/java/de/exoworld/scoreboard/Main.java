@@ -45,6 +45,7 @@ public final class Main extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
         manager = Bukkit.getPluginManager();
 
         createManager();

@@ -21,7 +21,7 @@ public class RankChangeListener {
             Map<Player, String> rankMap = LuckPermsManager.getInstance().getRankMap();
             if (player != null && player.isOnline()) {
                 if (rankMap.containsKey(player) && !rankMap.get(player).equals(e.getUser().getPrimaryGroup())) {
-                    ScoreboardManager.getInstnace().changeRank(player);
+                    ScoreboardManager.getInstance().changeRank(player);
                     rankMap.replace(player, e.getUser().getPrimaryGroup());
                 }
             }

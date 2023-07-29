@@ -26,7 +26,7 @@ public class ScoreboardCommands implements CommandExecutor, TabCompleter {
                 return true;
             }
             if (args[0].equalsIgnoreCase("refresh")) {
-                ScoreboardManager.getInstnace().refreshScoreboards();
+                ScoreboardManager.getInstance().refreshScoreboards();
                 sender.sendMessage("§7[§bCustomScoreboard§7] §2Scoreboard wurde für alle Spieler neu geladen.");
                 return true;
             }

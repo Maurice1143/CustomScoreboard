@@ -12,7 +12,7 @@ public class MoneyChangeListener {
         //in seconds
         int checkInterval = 1;
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-            ScoreboardManager manager = ScoreboardManager.getInstnace();
+            ScoreboardManager manager = ScoreboardManager.getInstance();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if(!manager.getMoneyMap().containsKey(player) || !manager.getMoneyMap().get(player).equals(Main.getEconomy().getBalance(player))){
                     manager.getMoneyMap().remove(player);

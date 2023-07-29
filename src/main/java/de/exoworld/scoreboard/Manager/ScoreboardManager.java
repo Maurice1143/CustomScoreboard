@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -21,6 +22,7 @@ public class ScoreboardManager {
     private final Map<Player, Double> moneyMap = new HashMap<>();
     private int infoTimerId = -1;
 
+
     public ScoreboardManager() {
         instance = this;
 
@@ -32,19 +34,14 @@ public class ScoreboardManager {
     }
 
     public void createScoreboard(Player player) {
-        final Scoreboard board = manager.getNewScoreboard();
-        Objective objective = board.registerNewObjective(scoreboardName, "dummy", Component.text(Settings.getServerName()));
+        Scoreboard board = manager.getNewScoreboard();
+        
 
         Team money = board.registerNewTeam("money");
         money.addEntry(ChatColor.RED + "" + ChatColor.WHITE);
-        money.prefix(Component.text(Settings.getMoneyColor() + "" + String.format("%,.2f", (Main.getEconomy().getBalance(player))) + Settings.getMoneySuffix()));
 
-        String primaryGroup = LuckPermsManager.getInstance().getPrimaryGroup(player);
-        String displayName = LuckPermsManager.getInstance().getDisplayName(primaryGroup);
-        String adminColor = Settings.getAdminColor(primaryGroup);
         Team rank = board.registerNewTeam("rank");
         rank.addEntry(ChatColor.AQUA + "" + ChatColor.WHITE);
-        rank.prefix(Component.text(adminColor + displayName));
 
         Team info1 = board.registerNewTeam("info1");
         info1.addEntry(infoMap.get(0));
@@ -52,6 +49,25 @@ public class ScoreboardManager {
         info2.addEntry(infoMap.get(1));
         Team info3 = board.registerNewTeam("info3");
         info3.addEntry(infoMap.get(2));
+
+        player.setScoreboard(board);
+    }
+
+    public void updateScoreboard(Player player) {
+        Scoreboard board = player.getScoreboard();
+        Objective objective = board.getObjective(scoreboardName);
+        if (objective != null) objective.unregister();
+        objective = board.registerNewObjective(scoreboardName, Criteria.DUMMY, Component.text(Settings.getServerName()));
+
+        Team money = board.getTeam("money");
+        Team rank = board.getTeam("rank");
+
+        String primaryGroup = LuckPermsManager.getInstance().getPrimaryGroup(player);
+        String displayName = LuckPermsManager.getInstance().getDisplayName(primaryGroup);
+        String adminColor = Settings.getAdminColor(primaryGroup);
+
+        money.prefix(Component.text(Settings.getMoneyColor() + "" + String.format("%,.2f", (Main.getEconomy().getBalance(player))) + Settings.getMoneySuffix()));
+        rank.prefix(Component.text(adminColor + displayName));
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.displayName(Component.text(Settings.getServerName()));
@@ -63,10 +79,7 @@ public class ScoreboardManager {
         objective.getScore(ChatColor.RED + "" + ChatColor.WHITE).setScore(6);
         objective.getScore("  ").setScore(5);
         objective.getScore(Settings.getInfoName()).setScore(4);
-
-        player.setScoreboard(board);
     }
-
 
     public void createInfos(Player player) {
         Objective objective = player.getScoreboard().getObjective(scoreboardName);
@@ -104,8 +117,12 @@ public class ScoreboardManager {
     }
 
     public void refreshScoreboards() {
+        LuckPermsManager.getInstance().getRankMap().clear();
+        getMoneyMap().clear();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            createScoreboard(player);
+            LuckPermsManager.getInstance().getRankMap().put(player, LuckPermsManager.getInstance().getPrimaryGroup(player));
+            getMoneyMap().put(player, Main.getEconomy().getBalance(player));
+            updateScoreboard(player);
             createInfos(player);
         }
     }
@@ -140,7 +157,7 @@ public class ScoreboardManager {
         return moneyMap;
     }
 
-    public static ScoreboardManager getInstnace() {
+    public static ScoreboardManager getInstance() {
         return instance;
     }
 }
