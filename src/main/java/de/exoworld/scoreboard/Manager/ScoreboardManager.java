@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -88,6 +89,8 @@ public class ScoreboardManager {
         objective.getScore(ChatColor.DARK_GRAY + "" + ChatColor.WHITE).setScore(6);
         objective.getScore("   ").setScore(5);
         objective.getScore(Settings.getInfoName()).setScore(4);
+
+        changeItemPrice(player, player.getInventory().getHeldItemSlot());
     }
 
     public void createInfos(Player player) {
@@ -138,11 +141,14 @@ public class ScoreboardManager {
     }
 
     public void changeItemPrice(Player p, Integer newSlot) {
-        BigDecimal price = Main.getEss().getWorth().getPrice(Main.getEss(), p.getInventory().getItem(newSlot));
+        ItemStack item = p.getInventory().getItem(newSlot);
         String temp = Settings.getNotWorthText();
+        if (item != null) {
+            BigDecimal price = Main.getEss().getWorth().getPrice(Main.getEss(), p.getInventory().getItem(newSlot));
 
-        if (price != null && price.intValue() > 0 ) {
-            temp = Settings.getWorthText().replaceAll("%WORTH%", String.valueOf(price));
+            if (price != null && price.intValue() > 0 ) {
+                temp = Settings.getWorthText().replaceAll("%WORTH%", String.valueOf(price));
+            }
         }
 
         p.getScoreboard().getEntryTeam(ChatColor.DARK_GRAY + "" + ChatColor.WHITE).prefix(Component.text(temp));
