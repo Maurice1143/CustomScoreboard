@@ -11,6 +11,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +45,9 @@ public class ScoreboardManager {
         Team rank = board.registerNewTeam("rank");
         rank.addEntry(ChatColor.AQUA + "" + ChatColor.WHITE);
 
+        Team worth = board.registerNewTeam("worth");
+        worth.addEntry(ChatColor.DARK_GRAY + "" + ChatColor.WHITE);
+
         Team info1 = board.registerNewTeam("info1");
         info1.addEntry(infoMap.get(0));
         Team info2 = board.registerNewTeam("info2");
@@ -61,6 +66,7 @@ public class ScoreboardManager {
 
         Team money = board.getTeam("money");
         Team rank = board.getTeam("rank");
+        //Team worth = board.getTeam("worth");
 
         String primaryGroup = LuckPermsManager.getInstance().getPrimaryGroup(player);
         String displayName = LuckPermsManager.getInstance().getDisplayName(primaryGroup);
@@ -71,13 +77,16 @@ public class ScoreboardManager {
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.displayName(Component.text(Settings.getServerName()));
-        objective.getScore("").setScore(11);
-        objective.getScore(Settings.getRankName()).setScore(10);
-        objective.getScore(ChatColor.AQUA + "" + ChatColor.WHITE).setScore(9);
-        objective.getScore(" ").setScore(8);
-        objective.getScore(Settings.getMoneyName()).setScore(7);
-        objective.getScore(ChatColor.RED + "" + ChatColor.WHITE).setScore(6);
-        objective.getScore("  ").setScore(5);
+        objective.getScore("").setScore(14);
+        objective.getScore(Settings.getRankName()).setScore(13);
+        objective.getScore(ChatColor.AQUA + "" + ChatColor.WHITE).setScore(12);
+        objective.getScore(" ").setScore(11);
+        objective.getScore(Settings.getMoneyName()).setScore(10);
+        objective.getScore(ChatColor.RED + "" + ChatColor.WHITE).setScore(9);
+        objective.getScore("  ").setScore(8);
+        objective.getScore(Settings.getWorthTitle()).setScore(7);
+        objective.getScore(ChatColor.DARK_GRAY + "" + ChatColor.WHITE).setScore(6);
+        objective.getScore("   ").setScore(5);
         objective.getScore(Settings.getInfoName()).setScore(4);
     }
 
@@ -122,10 +131,23 @@ public class ScoreboardManager {
         for (Player player : Bukkit.getOnlinePlayers()) {
             LuckPermsManager.getInstance().getRankMap().put(player, LuckPermsManager.getInstance().getPrimaryGroup(player));
             getMoneyMap().put(player, Main.getEconomy().getBalance(player));
+            createScoreboard(player);
             updateScoreboard(player);
             createInfos(player);
         }
     }
+
+    public void changeItemPrice(Player p, Integer newSlot) {
+        BigDecimal price = Main.getEss().getWorth().getPrice(Main.getEss(), p.getInventory().getItem(newSlot));
+        String temp = Settings.getNotWorthText();
+
+        if (price != null && price.intValue() > 0 ) {
+            temp = Settings.getWorthText().replaceAll("%WORTH%", String.valueOf(price));
+        }
+
+        p.getScoreboard().getEntryTeam(ChatColor.DARK_GRAY + "" + ChatColor.WHITE).prefix(Component.text(temp));
+    }
+
 
     public void createInfoMap() {
         infoMap.put(0, ChatColor.DARK_PURPLE + "" + ChatColor.WHITE);

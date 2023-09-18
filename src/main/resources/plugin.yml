@@ -6,7 +6,7 @@ authors: [Maurice]
 description: Simple Scoreboard plugin
 website: https://www.eXo-world.de
 
-depend: [LuckPerms, Vault]
+depend: [LuckPerms, Vault, Essentials]
 
 commands:
   customscoreboard:

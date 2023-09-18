@@ -24,6 +24,9 @@ public final class Settings {
     private static String infoName;
     private static int infoCooldown;
     private List<String> infoMessages;
+    private static String worthTitle;
+    private static String worthText;
+    private static String notWorthText;
     private static final List<String[]> infoMessageList = new ArrayList<>();
 
     public Settings() {
@@ -38,6 +41,9 @@ public final class Settings {
         infoName = config.getString("Info.Name", "Infos:");
         infoCooldown = config.getInt("Info.Cooldown", 60);
         infoMessages = config.getStringList("Info.Infos");
+        worthTitle = config.getString("Worth.Title");
+        worthText = config.getString("Worth.Text");
+        notWorthText = config.getString("Worth.NotWorthText");
 
         createMessages(getList(infoMessages));
     }
@@ -91,6 +97,15 @@ public final class Settings {
     public static int getInfoCooldown() {
         return infoCooldown;
     }
+    public static String getWorthTitle() {
+        return worthTitle;
+    }
+    public static String getWorthText() {
+        return worthText;
+    }
+    public static String getNotWorthText() {
+        return notWorthText;
+    }
 
     public static String getAdminColor(String group) {
         String color = "§f";
@@ -129,6 +144,9 @@ public final class Settings {
         infoName = config.getString("Info.Name", "Infos:");
         infoCooldown = config.getInt("Info.Cooldown", 60);
         infoMessages = config.getStringList("Info.Infos");
+        worthTitle = config.getString("Worth.Title");
+        worthText = config.getString("Worth.Text");
+        notWorthText = config.getString("Worth.NotWorthText");
 
         createAdminColors();
         createMessages(getList(infoMessages));

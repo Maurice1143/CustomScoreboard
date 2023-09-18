@@ -1,10 +1,12 @@
 package de.exoworld.scoreboard;
 
 import de.exoworld.scoreboard.Commands.ScoreboardCommands;
+import de.exoworld.scoreboard.Listener.ItemChangeListener;
 import de.exoworld.scoreboard.Listener.JoinQuitListener;
 import de.exoworld.scoreboard.Listener.MoneyChangeListener;
 import de.exoworld.scoreboard.Manager.LuckPermsManager;
 import de.exoworld.scoreboard.Manager.ScoreboardManager;
+import net.ess3.api.IEssentials;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -19,6 +21,7 @@ public final class Main extends JavaPlugin {
     private static final Logger log = Logger.getLogger("CustomScoreboard");
     private static Main plugin = null;
     private static Economy econ = null;
+    private static IEssentials ess = null;
 
     private static Settings ScoreboardConfig;
     private static PluginManager manager;
@@ -33,6 +36,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         ScoreboardConfig = new Settings();
+        manager = getServer().getPluginManager();
 
         // Plugin startup logic
         if (!setupEconomy() ) {
@@ -45,8 +49,11 @@ public final class Main extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-
-        manager = Bukkit.getPluginManager();
+        if (!setupEssentials()) {
+            log.severe(String.format("[%s] - Essentials API nicht gefunden!", getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         createManager();
         createEvents();
@@ -66,6 +73,7 @@ public final class Main extends JavaPlugin {
         return true;
     }
 
+
     private boolean setupLuckPerms() {
         if (getServer().getPluginManager().getPlugin("LuckPerms") == null) {
             return false;
@@ -78,9 +86,19 @@ public final class Main extends JavaPlugin {
         return true;
     }
 
+    private boolean setupEssentials() {
+        if (getServer().getPluginManager().getPlugin("Essentials") == null) {
+            return false;
+        }
+        ess = (IEssentials) getServer().getPluginManager().getPlugin("Essentials");
+        return true;
+    }
+
+
 
     private void createEvents() {
         manager.registerEvents(new JoinQuitListener(), this);
+        manager.registerEvents(new ItemChangeListener(), this);
         new MoneyChangeListener();
     }
 
@@ -106,5 +124,9 @@ public final class Main extends JavaPlugin {
 
     public static Logger getPluginLogger() {
         return log;
+    }
+
+    public static IEssentials getEss() {
+        return ess;
     }
 }
