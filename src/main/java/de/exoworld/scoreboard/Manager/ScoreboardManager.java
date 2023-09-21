@@ -146,7 +146,7 @@ public class ScoreboardManager {
         if (item != null) {
             BigDecimal price = Main.getEss().getWorth().getPrice(Main.getEss(), p.getInventory().getItem(newSlot));
 
-            if (price != null && price.intValue() > 0 ) {
+            if (price != null && price.doubleValue() > 0 ) {
                 temp = Settings.getWorthText().replaceAll("%WORTH%", String.valueOf(price));
             }
         }
