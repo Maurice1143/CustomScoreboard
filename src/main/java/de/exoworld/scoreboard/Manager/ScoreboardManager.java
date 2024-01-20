@@ -2,6 +2,7 @@ package de.exoworld.scoreboard.Manager;
 
 import de.exoworld.scoreboard.Main;
 import de.exoworld.scoreboard.Settings;
+import de.exoworld.scoreboard.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -73,7 +74,7 @@ public class ScoreboardManager {
         String displayName = LuckPermsManager.getInstance().getDisplayName(primaryGroup);
         String adminColor = Settings.getAdminColor(primaryGroup);
 
-        money.prefix(Component.text(Settings.getMoneyColor() + "" + String.format("%,.2f", (Main.getEconomy().getBalance(player))) + Settings.getMoneySuffix()));
+        money.prefix(Component.text(Settings.getMoneyColor() + "" + Utils.getMoneyString(Main.getEconomy().getBalance(player)) + Settings.getMoneySuffix()));
         rank.prefix(Component.text(adminColor + displayName));
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -117,7 +118,7 @@ public class ScoreboardManager {
 
 
     public void changeMoney(Player player, double money) {
-        player.getScoreboard().getEntryTeam(ChatColor.RED + "" + ChatColor.WHITE).prefix(Component.text(Settings.getMoneyColor() + "" + String.format("%,.2f", money) + Settings.getMoneySuffix()));
+        player.getScoreboard().getEntryTeam(ChatColor.RED + "" + ChatColor.WHITE).prefix(Component.text(Settings.getMoneyColor() + "" + Utils.getMoneyString(money) + Settings.getMoneySuffix()));
     }
 
     public void changeRank(Player player) {

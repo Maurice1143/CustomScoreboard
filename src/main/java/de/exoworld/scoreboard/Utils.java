@@ -1,6 +1,8 @@
 package de.exoworld.scoreboard;
 
-import org.bukkit.ChatColor;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Utils {
     public Utils() {}
@@ -17,5 +19,12 @@ public class Utils {
 
         //}
         return color;
+    }
+
+    public static String getMoneyString(double money) {
+        DecimalFormat moneyFormat = (DecimalFormat) NumberFormat.getNumberInstance(Locale.GERMAN);
+        moneyFormat.applyPattern("#,###.##");
+
+        return moneyFormat.format(money);
     }
 }
